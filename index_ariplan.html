@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Air Plane Game</title>
+		<style type = 'text/css'>
+			#ocean{
+				background-image: url('ocean.jpg');
+				width: 900px;
+				height: 700px;
+			}
+			.player{
+				background-image: url('player.png');
+				width: 70px;
+				height: 75px;
+				position: absolute;
+			}
+			.enemy{
+				background-image: url('enemy.png');
+				width: 70px;
+				height: 75px;
+				position: absolute;
+			}
+		</style>
+	</head>
+	<body>
+		<div id = 'ocean'>
+			<div id ='players'></div>
+			<div id = 'enemies'></div>
+		</div>
+		<script type = 'text/javascript'>
+		let player = {
+			top: 620,
+			left: 450
+		}
+		let enemies = [
+			{top: 200, left:250},
+			{top: 275, left:450},
+			{top: 175, left:375},
+			{top: 300, left:250},
+			{top: 375, left:550},
+			{top: 325, left:375}
+		]
+		function drawPlayer(){
+			let content = "";
+			content = "<div class='player' style = 'left:"+player.left+"px; top:"+player.top+"px'></div>";
+			console.log(content)
+			document.getElementById('players').innerHTML = content;
+		}
+		drawPlayer();
+
+		function drawEnemies(){
+			let content = "";
+			for(let i = 0; i<enemies.length; i++){
+				content += "<div class='enemy' style = 'left:"+enemies[i].left+"px; top:"+enemies[i].top+"px'></div>";
+			}
+			document.getElementById('enemies').innerHTML = content;
+		}
+		drawEnemies()
+		document.onkeydown = function(e){
+			if(e.keyCode == 39){//right
+				player.left += 10;
+			}
+			if(e.keyCode == 37){//left
+				player.left -= 10;
+			}
+			if(e.keyCode == 38 && player.top>=450){//up
+				player.top -= 10;
+			}
+			if(e.keyCode == 40 && player.top<=625){//down
+				player.top += 10;
+			}
+			drawPlayer();
+		}
+		</script>
+	</body>
+</html>
