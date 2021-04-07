@@ -21,14 +21,22 @@
 				height: 75px;
 				position: absolute;
 			}
+			.missile{
+				background-color: red;
+				width: 5px;
+				height: 10px;
+				position: absolute;
+			}
 		</style>
 	</head>
 	<body>
 		<div id = 'ocean'>
 			<div id ='players'></div>
 			<div id = 'enemies'></div>
+			<div id = 'missiles'></div>
 		</div>
 		<script type = 'text/javascript'>
+
 		let player = {
 			top: 620,
 			left: 450
@@ -41,13 +49,16 @@
 			{top: 375, left:550},
 			{top: 325, left:375}
 		]
+		
+		let missiles = [];
+
 		function drawPlayer(){
 			let content = "";
 			content = "<div class='player' style = 'left:"+player.left+"px; top:"+player.top+"px'></div>";
 			console.log(content)
 			document.getElementById('players').innerHTML = content;
 		}
-		drawPlayer();
+		//drawPlayer();
 
 		function drawEnemies(){
 			let content = "";
@@ -56,8 +67,30 @@
 			}
 			document.getElementById('enemies').innerHTML = content;
 		}
-		drawEnemies()
+		//drawEnemies()
+
+		function drawMissiles(){
+			let content = ""
+			for(let i =0; i<missiles.length; i++){
+				content += "<div class='missile' style = 'left:"+missiles[i].left+"px; top:"+missiles[i].top+"px'></div>";
+			}
+			document.getElementById('missiles').innerHTML = content;
+		}
+
+		function moveEnemies(){
+			for(let i = 0; i<enemies.length; i++){
+				enemies[i].top += 1
+			}
+		}
+
+		function moveMissiles(){
+			for(let i = 0; i<missiles.length; i++){
+				missiles[i].top -= 5
+			}
+		}
+
 		document.onkeydown = function(e){
+			console.log(e)
 			if(e.keyCode == 39){//right
 				player.left += 10;
 			}
@@ -67,11 +100,29 @@
 			if(e.keyCode == 38 && player.top>=450){//up
 				player.top -= 10;
 			}
+			
 			if(e.keyCode == 40 && player.top<=625){//down
 				player.top += 10;
 			}
+			if(e.keyCode == 32){//Fire missile
+				missiles.push({top: player.top-8, left:player.left+34});
+				drawMissiles();
+			}
 			drawPlayer();
 		}
+
+		function gameLoop(){
+			drawPlayer();
+			moveEnemies();
+			drawEnemies();
+			moveMissiles();
+			drawMissiles();
+
+			setTimeout(gameLoop, 10);
+		}
+
+		gameLoop();
+
 		</script>
 	</body>
 </html>
